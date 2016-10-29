@@ -1,0 +1,16 @@
+Map - you can zoom in & stuff
+
+	Zoom: via gestures
+
+1/4th Sidebar giving search options - view diff types of points of interest
+	ie: 	Capitals
+		Large Tourist Locations/ Sites of Interest
+			World Heritage Sites
+
+	- different "masks"
+	get data from travel guide?
+		CIA world factbook
+
+Can point to one
+	View information about it
+	
