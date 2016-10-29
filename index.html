@@ -37,9 +37,15 @@
 
       var url = "heritage-sites.csv";
 
+      var template = {
+        title: "UNESCO World Heritage Site",
+        content: "<b>{name_en}</b>, {date_inscribed} {short_description_en}"
+      };
+
       var csvLayer = new CSVLayer({
         url: url,
-        copyright: "UNESCO"
+        copyright: "UNESCO",
+        popupTemplate: template
       });
       csvLayer.renderer = new SimpleRenderer({
         symbol: new SimpleMarkerSymbol({
