@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Get started with SceneView - Create a 3D map</title>
+
+
+<style>
+  html, body, #viewDiv {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+  }
+</style>
+
+<html>
+<head>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.1/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.1/"></script>
+
+  <script>
+    require([
+      "esri/Map",
+      "esri/views/SceneView",
+      "esri/layers/CSVLayer",
+      "esri/renderers/SimpleRenderer",
+      "esri/symbols/SimpleMarkerSymbol",
+      "dojo/domReady!"
+    ], function(Map, SceneView, CSVLayer, SimpleRenderer, SimpleMarkerSymbol) {
+      // Code to create the map and view will go here
+
+
+      var map = new Map({
+        basemap: "satellite",
+        ground: "world-elevation"
+      });
+
+      var url = "heritage-sites.csv";
+
+      var csvLayer = new CSVLayer({
+        url: url,
+        copyright: "UNESCO"
+      });
+      csvLayer.renderer = new SimpleRenderer({
+        symbol: new SimpleMarkerSymbol({
+          size: "15px",
+          color: [238, 69, 0, 0.5],
+          outline: {
+            width: 0.5,
+            color: "white"
+          }
+        })
+      });
+      map.add(csvLayer);  // adds the layer to the map
+
+      var view = new SceneView({
+        container: "viewDiv",  // Reference to the DOM node that will contain the view
+        map: map  // References the map object created in step 3
+      });
+
+    });
+  </script>
+
+<body>
+<div id="viewDiv"></div>
+</body>
+
+
+</head>
+</html>
