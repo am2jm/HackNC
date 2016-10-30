@@ -1,3 +1,5 @@
+    
+
     require([
       "esri/Map",
       "esri/layers/CSVLayer",
@@ -122,6 +124,7 @@
         featureLayer.visible = true;
         layer2.visible = true;
       }
+
       
        var button = document.createElement("button");
       var t = document.createTextNode("Heritage");   
@@ -158,14 +161,54 @@
       button3.style.padding="5px";
       button3.style.fontFamily="Calibri";
       button3.onclick = layerA;
+
+      function startDictation() {
+   
+      if (window.hasOwnProperty('webkitSpeechRecognition')) {
+   
+        var recognition = new webkitSpeechRecognition();
+   
+        recognition.continuous = false;
+        recognition.interimResults = false;
+   
+        recognition.lang = "en-US";
+        recognition.start();
+   
+        recognition.onresult = function(e) {
+          document.getElementById('recognition').value
+                                   = e.results[0][0].transcript;
+          recognition.stop();
+          findme();
+        };
+   
+        recognition.onerror = function(e) {
+          recognition.stop();
+        }
+   
+      }
+    }
+
+      var button4 = document.createElement("input");
+      button4.id = "recognition";
+      document.body.appendChild(button4);
+      button4.style.backgroundColor="white";
+      button4.onclick = startDictation;
       
+
+
       var searchWidget = new Search({
         view: view
       });
       searchWidget.startup();
 
+      function findme(){
+        searchWidget.search(button4.value);
+        button4.blur();
+      }
+
       view.ui.add(logo, "bottom-right");
       view.ui.add(searchWidget, "top-right");
+      view.ui.add(button4, "top-right");
       view.ui.add(button3, "bottom-left");
       view.ui.add(button, "bottom-left");
       view.ui.add(button2, "bottom-left");
