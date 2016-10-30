@@ -55,7 +55,7 @@
 
       layer2.renderer = new SimpleRenderer({
           symbol: new SimpleMarkerSymbol({
-            size: "23px",
+            size: "50px",
             color: [2, 69, 200, 0.5],
             outline: {
               width: 0.5,
@@ -77,7 +77,7 @@
 
       featureLayer.renderer = new SimpleRenderer({
         symbol: new SimpleMarkerSymbol({
-          size: "23px",
+          size: "50px",
           color: [200, 0, 200, 0.5],
           outline: {
             width: 0.5,
@@ -204,7 +204,7 @@
 
       var button4 = document.createElement("input");
       var icon = document.createElement("img");
-      icon.src = "//i.imgur.com/cHidSVu.gif";
+      icon.src = "//i.imgur.com/6b8p6tW.png";
       icon.onclick = startDictation;
       button4.id = "recognition";
       button4.appendChild(icon);
