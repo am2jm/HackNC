@@ -121,27 +121,43 @@
         layer2.visible = true;
       }
       
-      var button = document.createElement("button");
+       var button = document.createElement("button");
       var t = document.createTextNode("Heritage");   
       button.appendChild(t);                               
       document.body.appendChild(button);
+      button.style.backgroundColor="white";
+      button.style.color="#2E3439";
+      button.style.border="0px";
+      button.style.fontSize="15px";
+      button.style.padding="5px";
+      button.style.font="Tahoma";
       button.onclick = layerH;
 
       var button2 = document.createElement("button");
       var t2 = document.createTextNode("Cities");      
       button2.appendChild(t2);                     
       document.body.appendChild(button2);
+      button2.style.backgroundColor="white";
+      button2.style.color="#2E3439";
+      button2.style.border="0px";
+      button2.style.fontSize="15px";
+      button2.style.padding="5px";
+      button2.style.font="Tahoma";
       button2.onclick = layerC;
       
       var button3 = document.createElement("button");
       var t3 = document.createTextNode("All");      
       button3.appendChild(t3);                     
       document.body.appendChild(button3);
+      button3.style.backgroundColor="white";
+      button3.style.color="#2E3439";
+      button3.style.border="0px";
+      button3.style.fontSize="15px";
+      button3.style.padding="5px";
+      button3.style.font="Tahoma";
       button3.onclick = layerA;
       
       view.ui.add(logo, "bottom-right");
-      //view.ui.add(navigationToggle, "top-left");
-
       view.ui.add(button3, "bottom-left");
       view.ui.add(button, "bottom-left");
       view.ui.add(button2, "bottom-left");
