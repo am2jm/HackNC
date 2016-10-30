@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Get started with SceneView - Create a 3D map</title>
+<title>World Sites Map</title>
 
 
 <style>
@@ -39,7 +39,7 @@
 
       var template = {
         title: "UNESCO World Heritage Site",
-        content: "<b>{name_en}</b>, {date_inscribed} {short_description_en}"
+        content: "<a href='#' onclick='window.open(\"https://www.google.com/search?q={name_en}\");return false;' <b>{name_en}</b></a>, {date_inscribed} {short_description_en}"
       };
 
       var csvLayer = new CSVLayer({
