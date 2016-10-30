@@ -196,7 +196,6 @@
     }
 
       var button4 = document.createElement("input");
-      
       button4.id = "recognition";
       document.body.appendChild(button4);
       button4.style.backgroundColor ="white";
@@ -211,6 +210,7 @@
       searchWidget.startup();
 
       function findme(){
+        searchWidget.searchTerm = button4.value;
         searchWidget.search(button4.value);
         button4.blur();
       }
