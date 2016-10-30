@@ -12,6 +12,7 @@
       "esri/views/ui/UI",
       "esri/widgets/NavigationToggle",
 
+      "esri/widgets/Search",
       "esri/layers/FeatureLayer",
 
       "dojo/domReady!"
@@ -28,6 +29,7 @@
       urlUtils,
       UI,
       NavigationToggle,
+      Search,
       FeatureLayer) {
 
       var map = new Map({
@@ -130,7 +132,7 @@
       button.style.border="0px";
       button.style.fontSize="15px";
       button.style.padding="5px";
-      button.style.font="Tahoma";
+      button.style.fontFamily="Calibri";
       button.onclick = layerH;
 
       var button2 = document.createElement("button");
@@ -142,7 +144,7 @@
       button2.style.border="0px";
       button2.style.fontSize="15px";
       button2.style.padding="5px";
-      button2.style.font="Tahoma";
+      button2.style.fontFamily="Calibri";
       button2.onclick = layerC;
       
       var button3 = document.createElement("button");
@@ -154,14 +156,21 @@
       button3.style.border="0px";
       button3.style.fontSize="15px";
       button3.style.padding="5px";
-      button3.style.font="Tahoma";
+      button3.style.fontFamily="Calibri";
       button3.onclick = layerA;
       
+      var searchWidget = new Search({
+        view: view
+      });
+      searchWidget.startup();
+
       view.ui.add(logo, "bottom-right");
+      view.ui.add(searchWidget, "top-right");
       view.ui.add(button3, "bottom-left");
       view.ui.add(button, "bottom-left");
       view.ui.add(button2, "bottom-left");
-     
+
+
        
 
     });
