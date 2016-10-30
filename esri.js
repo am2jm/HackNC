@@ -178,7 +178,14 @@
           document.getElementById('recognition').value
                                    = e.results[0][0].transcript;
           recognition.stop();
-          findme();
+          if(e.results[0][0].transcript === "zoom out"){
+            zoomOut();
+          }
+          else if(e.results[0][0].transcript === "zoom in"){
+            zoomIn();
+          }
+          else
+            findme();
         };
    
         recognition.onerror = function(e) {
@@ -189,9 +196,11 @@
     }
 
       var button4 = document.createElement("input");
+      
       button4.id = "recognition";
       document.body.appendChild(button4);
-      button4.style.backgroundColor="white";
+      button4.style.backgroundColor ="white";
+      button4.placeholder = "Speech";
       button4.onclick = startDictation;
       
 
@@ -203,6 +212,15 @@
 
       function findme(){
         searchWidget.search(button4.value);
+        button4.blur();
+      }
+
+      function zoomOut(){
+        view.zoom -= 5;
+        button4.blur();
+      }
+      function zoomIn(){
+        view.zoom += 5;
         button4.blur();
       }
 
