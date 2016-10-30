@@ -103,7 +103,7 @@
       var view = new SceneView({
         container: "viewDiv",
         center: [138, 35],
-        zoom: 4,
+        zoom: 2,
         map: map
       });
       
@@ -177,12 +177,19 @@
         recognition.onresult = function(e) {
           document.getElementById('recognition').value
                                    = e.results[0][0].transcript;
+          console.log(e.results[0][0].transcript);
           recognition.stop();
           if(e.results[0][0].transcript === "zoom out"){
             zoomOut();
           }
           else if(e.results[0][0].transcript === "zoom in"){
             zoomIn();
+          }
+          else if(e.results[0][0].transcript === "left"){
+            left();
+          }
+          else if(e.results[0][0].transcript === "right"){
+            right();
           }
           else
             findme();
@@ -196,11 +203,15 @@
     }
 
       var button4 = document.createElement("input");
-      
+      var icon = document.createElement("img");
+      icon.src = "//i.imgur.com/cHidSVu.gif";
+      icon.onclick = startDictation;
       button4.id = "recognition";
+      button4.appendChild(icon);
       document.body.appendChild(button4);
       button4.style.backgroundColor ="white";
       button4.placeholder = "Speech";
+
       button4.onclick = startDictation;
       
 
@@ -211,27 +222,83 @@
       searchWidget.startup();
 
       function findme(){
+        searchWidget.searchTerm = button4.value;
         searchWidget.search(button4.value);
+        view.zoom = 5;
         button4.blur();
       }
 
       function zoomOut(){
-        view.zoom -= 5;
+        view.zoom -= 2;
         button4.blur();
       }
       function zoomIn(){
-        view.zoom += 5;
+        view.zoom += 2;
         button4.blur();
       }
 
       view.ui.add(logo, "bottom-right");
       view.ui.add(searchWidget, "top-right");
-      view.ui.add(button4, "top-right");
+      view.ui.add(icon, "top-right");
       view.ui.add(button3, "bottom-left");
       view.ui.add(button, "bottom-left");
       view.ui.add(button2, "bottom-left");
 
+      function left(){
+        rotateView(-1);
+        button4.blur();
+      }
+      function right(){
+        rotateView(1);
+        button4.blur();
+      }
 
+      function rotateView(direction) {
+        var heading = view.camera.heading;
+
+        // Set the heading of the view to the closest multiple of 90 degrees,
+        // depending on the direction of rotation
+        if (direction > 0) {
+          heading = Math.floor((heading + 1e-3) / 90) * 90 + 90;
+        } else {
+          heading = Math.ceil((heading - 1e-3) / 90) * 90 - 90;
+        }
+
+        view.goTo({
+          heading: heading
+        });
+      }
+
+      function tiltView() {
+        // Get the camera tilt and add a small number for numerical inaccuracies
+        var tilt = view.camera.tilt + 1e-3;
+
+        // Switch between 3 levels of tilt
+        if (tilt >= 80) {
+          tilt = 0;
+        } else if (tilt >= 40) {
+          tilt = 80;
+        } else {
+          tilt = 40;
+        }
+
+        view.goTo({
+          tilt: tilt
+        });
+      }
+
+      function updateIndicator(camera) {
+        var tilt = camera.tilt;
+        var heading = camera.heading;
+
+        // Update the indicator to reflect the current tilt/heading using
+        // css transforms.
+        var transform = "rotateX(" + 0.8 * tilt +
+          "deg) rotateY(0) rotateZ(" + -heading + "deg)";
+
+        indicatorSpan.style["transform"] = transform;
+        indicatorSpan.style["-webkit-transform"] = transform; // Solution for Safari
+      }
        
 
     });
