@@ -1,41 +1,96 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>World Sites Map</title>
-
-
-<style>
-  html, body, #viewDiv {
-    padding: 0;
-    margin: 0;
-    height: 100%;
-    width: 100%;
-  }
-</style>
 
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>CSVLayer - 4.1</title>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
   <link rel="stylesheet" href="https://js.arcgis.com/4.1/esri/css/main.css">
   <script src="https://js.arcgis.com/4.1/"></script>
 
   <script>
     require([
       "esri/Map",
-      "esri/views/SceneView",
       "esri/layers/CSVLayer",
+      "esri/views/MapView",
+      "esri/views/SceneView",
+      "esri/layers/Layer",
       "esri/renderers/SimpleRenderer",
       "esri/symbols/SimpleMarkerSymbol",
+      "esri/config",
+      "dojo/dom-construct",
+      "esri/core/urlUtils",
+      "esri/views/ui/UI",
+      "esri/widgets/NavigationToggle",
       "dojo/domReady!"
-    ], function(Map, SceneView, CSVLayer, SimpleRenderer, SimpleMarkerSymbol) {
-      // Code to create the map and view will go here
+    ], function(
+      Map,
+      CSVLayer,
+      MapView,
+      SceneView, 
+      Layer, 
+      SimpleRenderer,
+      SimpleMarkerSymbol,
+      esriConfig,
+      domConstruct,
+      urlUtils,
+      UI,
+      NavigationToggle) {
 
 
-      var map = new Map({
-        basemap: "satellite",
-        ground: "world-elevation"
+      // var layer2 = Layer.fromPortalItem({
+      //     portalItem: { // autocast as esri/portal/PortalItem
+      //       id: "8444e275037549c1acab02d2626daaee"
+      //     }
+      //   }).then(function(value){
+          
+      //       map.add(value);
+      //       console.log("Hi Bailey");
+          
+          
+      //   }, function(rejection){
+        
+      //       console.log("Layer failed to load: ", rejection);
+               
+      //   });
+
+      // Adds the layer to the map once it loads
+      
+      
+      // function isToggle(lyr){
+      //   console.log("Hello Bailey");
+      // }
+
+      var url =
+        "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.csv";
+      var url2 = "heritage-sites.csv";
+       // "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.csv";
+      // If CSV files are not on the same domain as your website, a CORS enabled server or a proxy is required.
+      //esriConfig.request.corsEnabledServers.push(url);
+      urlUtils.addProxyRule({
+        urlPrefix: "earthquake.usgs.gov",
+        proxyUrl: "/sproxy/"
       });
 
-      var url = "heritage-sites.csv";
+      var map = new Map({
+        basemap: "gray"
+      });
+
+      // attributes in CSV file
+      // time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+      // 2016-09-09T02:06:29.040Z,35.5213,-97.3848,5,3.8,mb_lg,,90,0.067,0.66,us,us10006n8p,2016-09-09T06:58:01.306Z,"0km WSW of Spencer, Oklahoma",earthquake,1,1.9,0.049,108,reviewed,us,us
 
       var template = {
         title: "UNESCO World Heritage Site",
@@ -44,12 +99,24 @@
 
       var csvLayer = new CSVLayer({
         url: url,
-        copyright: "UNESCO",
+        copyright: "USGS Earthquakes",
         popupTemplate: template
       });
+      
+      var template2 = {
+        title: "My Layer",
+        content: "this is mineeee"
+      };
+      
+      var layer2 = new CSVLayer({
+        url: url2,
+        copyright: "Second Layer",
+        popupTemplate: template2
+      });
+
       csvLayer.renderer = new SimpleRenderer({
         symbol: new SimpleMarkerSymbol({
-          size: "15px",
+          size: "23px",
           color: [238, 69, 0, 0.5],
           outline: {
             width: 0.5,
@@ -57,20 +124,78 @@
           }
         })
       });
-      map.add(csvLayer);  // adds the layer to the map
 
-      var view = new SceneView({
-        container: "viewDiv",  // Reference to the DOM node that will contain the view
-        map: map  // References the map object created in step 3
+      // layer2.renderer = new SimpleRenderer({
+      //     symbol: new SimpleMarkerSymbol({
+      //       size: "23px",
+      //       color: [2, 69, 200, 0.5],
+      //       outline: {
+      //         width: 0.5,
+      //         color: "white"
+      //       }
+      //     })
+      //   });
+
+      map.add(csvLayer);
+      //map.add(layer2);
+      
+      var logo = domConstruct.create("img", {
+        src: "https://placeholdit.imgix.net/~text?bg=000&txtclr=e8117f&txtsize=48&txt=logo&w=100&h=80",
+        id: "logo",
+        title: "logo"
       });
+      
+      
+
+      var view = new MapView({
+        container: "viewDiv",
+        center: [138, 35],
+        zoom: 4,
+        map: map
+      });
+      
+      var navigationToggle = new NavigationToggle({
+        view: view
+      });
+      
+      // var toggle = new LayerToggle(){
+      //   // I want a set of buttons
+      //   // that when clicked will toggle the layers
+      //   // only 1 layer can be viewed at a time!
+      // }
+      
+      function layer1(){
+        csvLayer.visible = false;
+        layer2.visible = false;
+      }
+      
+      var button = document.createElement("BUTTON");
+      var t = document.createTextNode("CLICK ME");       // Create a text node
+      button.appendChild(t);                                // Append the text to <button>
+      document.body.appendChild(button);
+      button.onclick = layer1;
+      
+      
+      view.ui.add(logo, "bottom-right");
+      view.ui.add(navigationToggle, "top-left");
+      view.ui.add(button, "bottom-left");
+      //view.ui.add("Addlyr", "bottom-left");
+      
 
     });
+    
+    // function layer1(){
+    //     csvLayer.visible = false;
+    //     layer2.visible = false;
+    //   }
   </script>
+</head>
 
 <body>
+  <div id="map">
+   
+</div>
   <div id="viewDiv"></div>
 </body>
 
-
-</head>
 </html>

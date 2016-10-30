@@ -23,52 +23,6 @@ resetTimer.setDuration( 2500 ); // when person absent 2.5 second, only then rese
 
 var progress = 0;
 
-//function paintInit() { 
-//  
-//  var ctx = Canvas.context;
-//
-//  // paints the initialization cue - a shrinking circle that forces the view to the centre
-//  ctx.fillStyle = "rgba(236, 91, 35, 1.0)";
-//  ctx.beginPath();    
-//  ctx.rect( 0,0, ctx.canvas.width, ctx.canvas.height );
-//  ctx.fill();
-//
-//  var oldMode = ctx.globalCompositeOperation;
-//  ctx.globalCompositeOperation = 'destination-out';
-//
-//  var xy = { x:window.innerWidth/2, y:window.innerHeight/2 };
-//  var d = Math.sqrt( screen.width*screen.width + screen.height*screen.height );
-//  var frac = stateTimer.elapsedFrac();
-//
-//  var radiusMin = screen.height/20;
-//  var radiusMax = d/2;
-//  if( frac < 0.6 ) { // shrink
-//    frac = frac / 0.6; // scale from 0 to 1
-//    var radius = ( 1 - frac ) * ( radiusMax - radiusMin ) + radiusMin;
-//  }
-//  else if( frac < 0.8 ) { // dwell a little bit
-//    // console.log( "Dwelling" );
-//    resetHeadOrigin();
-//    var radius = radiusMin;
-//  }
-//  else { // expand
-//    frac = (frac-0.8)/0.2; // scale from 0 to 1
-//    var radius = frac * ( radiusMax - radiusMin ) + radiusMin;
-//  }
-//
-//  // console.log( "Timer elapsedFrac(): " + stateTimer.elapsedFrac() );
-//
-//  ctx.fillStyle = "rgba(255, 255, 255, 1.0)";
-//  ctx.beginPath();
-//  ctx.arc( xy.x, xy.y, radius, 0, 2 * Math.PI, false);
-//  ctx.fill();
-//
-//  ctx.globalCompositeOperation = oldMode;
-//}
-
-
-
-
 function resetCamera() {
   return {
     distance: 20,
@@ -98,56 +52,15 @@ function init() {
     setTimeout( loadingAnimation, 500 );
     var loadingElement = document.getElementById("loading-text");
     loadingElement.innerHTML = progress + "% complete";
-
-//    var L1 = "Loading.&nbsp;&nbsp;";
-//    var L2 = "Loading..&nbsp;";
-//    var L3 = "Loading...";
-//    if( loading.innerHTML == L1 ) loading.innerHTML = L2;
-//    else if( loading.innerHTML == L2 ) loading.innerHTML = L3;
-//    else loading.innerHTML = L1;
   })();
 
 
-//  container = document.createElement( 'div' );
-//  document.body.appendChild( container );
-//
+  container = document.createElement( 'div' );
+  document.body.appendChild( container );
+    
+    
   camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
   camera.position.z = xlCamera.distance;
-
-    
-    require([
-          "esri/Map",
-          "esri/views/SceneView",
-          "dojo/domReady!"
-        ], function(Map, SceneView) {
-          // Code to create the map and view will go here
-          var map = new Map({
-            basemap: "hybrid",
-            ground: "world-elevation"
-          });
-
-          var view = new SceneView({
-            container: "viewDiv",  // Reference to the DOM node that will contain the view
-            map: map  // References the map object created in step 3
-          });
-        });
-//  // scene
-//
-//  scene = new THREE.Scene();
-//
-//  var ambient = new THREE.AmbientLight( 0xffffff );
-//  scene.add( ambient );
-
-  // var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-  // directionalLight.position.set( 0, 0, 1 ).normalize();
-  // scene.add( directionalLight );
-
-  // pointLight = new THREE.PointLight( 0xe0e0ff, 1, 0 );
-  // pointLight.position.set( 0, 0, xlCamera.distance );
-  // scene.add( pointLight );
-
-  // model
-   
 
   var onProgress = function ( xhr ) {
     if ( xhr.lengthComputable ) {
@@ -160,38 +73,15 @@ function init() {
   var onError = function ( xhr ) {
   };
 
-
-//  THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
-//
-//  var loader = new THREE.OBJMTLLoader();
-//  var objPath = "assets/reformatted/5f6bb418ef684068b14121badd1a8c76.obj";
-//  var mtlPath = "assets/reformatted/5f6bb418ef684068b14121badd1a8c76.obj.mtl"
-//  loader.load( objPath, mtlPath, function ( object ) {
-//    // console.log( object )
-//    object.position.set( 0, 0, -2 );
-//    object.rotation.set( rad(-90), 0, 0, "XYZ");
-//    scene.add( object );
 //
     var start = document.getElementById("start-button");
     start.onclick = function() {
-//      resetHeadOrigin();
+      resetHeadOrigin();
       xlabsUpdateEnabled = true;
       document.getElementById("fullscreen").style.display = "none";
     } 
     start.style.display = "inline";
 
-//    document.getElementById("loading-text").style.display = "none";
-//  }, onProgress, onError );
-//
-//
-//  renderer = new THREE.WebGLRenderer();
-//  renderer.setPixelRatio( window.devicePixelRatio );
-//  renderer.setSize( window.innerWidth, window.innerHeight );
-//  container.appendChild( renderer.domElement );
-
-  // document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-
-  //
 
   window.addEventListener( 'resize', onWindowResize, false );
 
@@ -222,25 +112,6 @@ function onDocumentMouseMove( event ) {
   if( xlCamera.elevation > 90 ) xlCamera.elevation = 90;
 
 }
-
-//
-
-//function animate() {
-//
-//  requestAnimationFrame( animate );
-//  update();
-//  render();
-//}
-//
-//function render() {
-//
-//  if( state == STATE_INIT_HEAD ) {
-//    paintInit();
-//  }
-//
-//  renderer.render( scene, camera );
-//
-//}
 
 var lastUpdate = null;
 
@@ -291,7 +162,7 @@ function updateCameraPosition() {
 
   var diffSec = (Date.now() - lastUpdate) / 1000.0;
   lastUpdate = Date.now();
-  // console.log( "lastUpdate: " + lastUpdate );
+   console.log( "lastUpdate: " + lastUpdate );
   // console.log( "xlCamera.azmimuthRate * diffSec: " + xlCamera.azmimuthRate * diffSec );
 
   xlCamera.azmimuth += xlCamera.azmimuthRate * diffSec;
@@ -321,6 +192,182 @@ function updateCameraPosition() {
 
 }
 
+function esri() {
+    require([
+      "esri/Map",
+      "esri/layers/CSVLayer",
+      "esri/views/MapView",
+      "esri/views/SceneView",
+      "esri/layers/Layer",
+      "esri/renderers/SimpleRenderer",
+      "esri/symbols/SimpleMarkerSymbol",
+      "esri/config",
+      "dojo/dom-construct",
+      "esri/core/urlUtils",
+      "esri/views/ui/UI",
+      "esri/widgets/NavigationToggle",
+
+      "esri/widgets/Search",
+      "esri/layers/FeatureLayer",
+
+      "dojo/domReady!"
+    ], function(
+      Map,
+      CSVLayer,
+      MapView,
+      SceneView, 
+      Layer, 
+      SimpleRenderer,
+      SimpleMarkerSymbol,
+      esriConfig,
+      domConstruct,
+      urlUtils,
+      UI,
+      NavigationToggle,
+      Search,
+      FeatureLayer) {
+
+      var map = new Map({
+        basemap: "satellite",
+        ground: "world-elevation"
+      });
+
+      var url2 = "heritage-sites.csv";
+       
+      
+      var template2 = {
+        title: "UNESCO World Heritage Site",
+        content: "<a href='#' onclick='window.open(\"https://www.google.com/search?q={name_en}\");return false;' <b>{name_en}</b></a>, {date_inscribed} {short_description_en}"
+      };
+      
+      var layer2 = new CSVLayer({
+        url: url2,
+        copyright: "UNESCO World Heritage Sites",
+        popupTemplate: template2
+      });
+
+      layer2.renderer = new SimpleRenderer({
+          symbol: new SimpleMarkerSymbol({
+            size: "23px",
+            color: [2, 69, 200, 0.5],
+            outline: {
+              width: 0.5,
+              color: "white"
+            }
+          })
+        });
+        
+      var tempFeat = {
+        title: "World Cities",
+        content: "I am {id} at {name} with population {pop}"
+      };
+
+      var featureLayer = new FeatureLayer({
+          url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/ArcGIS/rest/services/WorldCities/FeatureServer/0",
+          popupTemplate: tempFeat,
+          copyright: "Services.ArcGis"
+      });
+
+      featureLayer.renderer = new SimpleRenderer({
+        symbol: new SimpleMarkerSymbol({
+          size: "23px",
+          color: [200, 0, 200, 0.5],
+          outline: {
+            width: 0.5,
+            color: "white"
+          }
+        })
+      });
+
+      console.log(featureLayer.fields);
+
+      map.add(featureLayer);
+      map.add(layer2);
+      
+      var logo = domConstruct.create("img", {
+        src: "ram.png",
+        height: "100px",
+        id: "logo",
+        title: "logo"
+      });
+      
+      
+
+      var view = new SceneView({
+        container: "viewDiv",
+        center: [138, 35],
+        zoom: 4,
+        map: map
+      });
+      
+      var navigationToggle = new NavigationToggle({
+        view: view
+      });
+      
+      function layerH(){
+        layer2.visible = true;
+        featureLayer.visible = false;
+
+      }
+      function layerC(){
+        featureLayer.visible = true;
+        layer2.visible = false;
+      }
+      function layerA(){
+        featureLayer.visible = true;
+        layer2.visible = true;
+      }
+      
+       var button = document.createElement("button");
+      var t = document.createTextNode("Heritage");   
+      button.appendChild(t);                               
+      document.body.appendChild(button);
+      button.style.backgroundColor="white";
+      button.style.color="#2E3439";
+      button.style.border="0px";
+      button.style.fontSize="15px";
+      button.style.padding="5px";
+      button.style.fontFamily="Calibri";
+      button.onclick = layerH;
+
+      var button2 = document.createElement("button");
+      var t2 = document.createTextNode("Cities");      
+      button2.appendChild(t2);                     
+      document.body.appendChild(button2);
+      button2.style.backgroundColor="white";
+      button2.style.color="#2E3439";
+      button2.style.border="0px";
+      button2.style.fontSize="15px";
+      button2.style.padding="5px";
+      button2.style.fontFamily="Calibri";
+      button2.onclick = layerC;
+      
+      var button3 = document.createElement("button");
+      var t3 = document.createTextNode("All");      
+      button3.appendChild(t3);                     
+      document.body.appendChild(button3);
+      button3.style.backgroundColor="white";
+      button3.style.color="#2E3439";
+      button3.style.border="0px";
+      button3.style.fontSize="15px";
+      button3.style.padding="5px";
+      button3.style.fontFamily="Calibri";
+      button3.onclick = layerA;
+      
+      var searchWidget = new Search({
+        view: view
+      });
+      searchWidget.startup();
+
+      view.ui.add(logo, "bottom-right");
+      view.ui.add(searchWidget, "top-right");
+      view.ui.add(button3, "bottom-left");
+      view.ui.add(button, "bottom-left");
+      view.ui.add(button2, "bottom-left");
+       
+
+    });
+}
 
 function onXLabsReady() {
   console.log( "onXLabsReady" );
@@ -331,8 +378,12 @@ function onXLabsReady() {
   xLabs.setConfig( "system.mode", "head" );
   xLabs.setConfig( "browser.canvas.paintHeadPose", "0" );
 
+    xLabs.setConfig( "calibration.clear", "1" ); // this also clears the memory buffer
+    xLabs.setConfig( "system.mode", "learning" );
+    xLabs.setConfig( "browser.canvas.paintLearning", "0" );
+    
   init();
-//  animate();  
+  esri();
 }
 
 
@@ -359,7 +410,7 @@ var headOriginQueue = {x:[], y:[]};
 var headOriginLength = 10;
 
 function resetHeadOrigin() {
-  // xlCamera = resetCamera();
+   xlCamera = resetCamera();
   Head.reset();
   headOriginQueue = {x:[], y:[]};
 }
@@ -381,8 +432,8 @@ function onXLabsUpdate() {
     console.log( headOriginQueue.x.length );
     if( headOriginQueue.x.length >= headOriginLength ) {
 
-      // console.log( headOriginQueue.x );
-      // console.log( headOriginQueue.y );
+       console.log( headOriginQueue.x );
+       console.log( headOriginQueue.y );
 
       Head.xHeadOrigin = findMedian( headOriginQueue.x )
       Head.yHeadOrigin = findMedian( headOriginQueue.y )
